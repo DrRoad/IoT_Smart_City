@@ -1,11 +1,13 @@
 import paho.mqtt.client as mqtt
 import time
 
-host="iot.eclipse.org"
+host="192.168.1.162"
 msg = ""
 
 client = mqtt.Client()
+client.username_pw_set("vikum","sutdmqtt")
 client.connect(host, 1883, 60)
+
 
 print("Publishing")
 msg="Work"
