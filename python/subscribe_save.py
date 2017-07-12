@@ -3,7 +3,7 @@ import time
 import math
 import json
 
-host = "10.19.52.64"
+host = "192.168.1.162"
 msg = ""
 
 def on_message(client, userdata, message):
@@ -15,8 +15,6 @@ def write_message(path, message):
 	message = message.replace("n_t", "noise_t")
 	message = message.replace("n_h", "noise_h")
 	jsonString = json.loads(message)
-	#jsonString = jsonString.replace("n_t", "noise_t");
-	#jsonString = jsonString.replace("n_h", "noise_h");
 	ticks = int(round(time.time()*1000))
 	file = path+jsonString["id"]+"_"+str(ticks)+".txt"
 	foo = open(file, "w")
