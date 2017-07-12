@@ -18,7 +18,7 @@ def on_message(client, userdata, message):
 def write_message(path, message):
         message = message.replace("n_t", "noise_t")
         message = message.replace("n_h", "noise_h")
-	jsonString = json.loads(message)
+		jsonString = json.loads(message)
         ticks = int(round(time.time()*1000))
         file = path+jsonString["id"]+"_"+str(ticks)+".txt"
         foo = open(file, "w")

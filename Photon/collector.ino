@@ -12,6 +12,7 @@ SYSTEM_MODE(SEMI_AUTOMATIC);
 #define port 1883
 
 MQTT client(host, port, callback);
+IPAddress remoteIP(8, 8, 8, 8);; 
 
 void callback(char* topic, byte* payload, unsigned int length){
     //
@@ -67,7 +68,9 @@ void setup() {
     pinMode(noisePin, INPUT);
     WiFi.on();
     WiFi.connect();
-    client.connect(id);
+    if(WiFi.ping(remoteIP, 10) > 5){
+        Particle.connect();
+    }
     time_now=0;
     //
    
@@ -77,13 +80,17 @@ void loop() {
     data = getData();
     time_now = Time.now();
     digitalWrite(led, HIGH);
-    if(!client.isConnected()){
-        client.connect(id);
+    client.connect(id);
+    while(!client.isConnected()){
+        //
     }
-    delay(50);
-    Particle.publish("Ok", data);
     client.publish("sutd/2.601", data);
-    
+    client.disconnect();
+    if(!Particle.connected()){    
+        if(WiFi.ping(remoteIP, 10) > 5){
+            Particle.connect();
+        }
+    }
 }
 
 String getData() {
