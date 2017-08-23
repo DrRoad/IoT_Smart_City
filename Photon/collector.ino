@@ -4,7 +4,7 @@ SYSTEM_MODE(SEMI_AUTOMATIC);
 #include <MQTT.h>
 
 //define Particle ID
-#define id "P1"
+#define id "P01"
 
 
 //MQTT
@@ -75,14 +75,23 @@ void setup() {
     //
    
 }
-
+bool led_status = false;
 void loop() {
     data = getData();
     time_now = Time.now();
-    digitalWrite(led, HIGH);
+    digitalWrite(led, HIGH);led_status=true;
     client.connect(id);
     while(!client.isConnected()){
-        //
+        client.connect(id);
+        if(time_now+1>Time.now()){
+            if(led_status) { digitalWrite(led, LOW); led_status = false; }
+            else { digitalWrite(led, HIGH); led_status = true; }
+        }
+        if(time_now+60>Time.now()){
+            digitalWrite(led, LOW);
+            led_status = false;
+            return;
+        }
     }
     client.publish("sutd/2.601", data);
     client.disconnect();
