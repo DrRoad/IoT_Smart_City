@@ -12,18 +12,18 @@ def on_connect(client, userdata, flags, rc):
 
 def on_message(client, userdata, message):
         msg = str(message.payload.decode("utf-8"))
-        write_message("/home/pi/Desktop/DataGather/Data/KTPH_", msg)
+        #write_message("/home/pi/Desktop/DataGather/Data/KTPH_", msg)
         print("Incomming message", msg)
 
 def write_message(path, message):
         message = message.replace("n_t", "noise_t")
         message = message.replace("n_h", "noise_h")
-		jsonString = json.loads(message)
+	jsonString = json.loads(message)
         ticks = int(round(time.time()*1000))
         file = path+jsonString["id"]+"_"+str(ticks)+".txt"
         foo = open(file, "w")
         foo.write(json.dumps(jsonString))
-        foo.close();
+        foo.close()
 
 client = mqtt.Client(cli)
 client.connect(host)
